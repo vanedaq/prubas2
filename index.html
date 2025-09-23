@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Organizador Financiero</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icon-192.png" />
+  <link rel="stylesheet" href="./style.app.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo">💰</div>
+      <h1>Organizador Financiero</h1>
+      <p class="subtitle">Control inteligente de tus finanzas</p>
+
+      <div class="controls">
+        <select id="mesSelector" aria-label="Mes"></select>
+        <button id="duplicateBtn" class="btn">⏭️ Duplicar al siguiente mes</button>
+        <button id="duplicateToBtn" class="btn">📋 Duplicar a...</button>
+        <button id="closeMonthBtn" class="btn">🔒 Cerrar mes</button>
+        <button id="importBtn" class="btn">📤 Importar</button>
+        <input id="importFile" type="file" accept="application/json" style="display:none" />
+        <button id="exportBtn" class="btn">📥 Exportar</button>
+        <button id="resetBtn" class="btn danger">🧹 Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="dashboard">
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-title">💵 Ingresos</div>
+          <div id="sumIngresos" class="card-value">$ 0</div>
+        </div>
+        <div class="card">
+          <div class="card-title">🏠 Fijos</div>
+          <div id="sumFijos" class="card-value">$ 0</div>
+        </div>
+        <div class="card">
+          <div class="card-title">💳 Tarjetas</div>
+          <div id="sumTarjetas" class="card-value">$ 0</div>
+        </div>
+        <div class="card">
+          <div class="card-title">🏦 Créditos</div>
+          <div id="sumCreditos" class="card-value">$ 0</div>
+        </div>
+        <div class="card">
+          <div class="card-title">🛒 Compras</div>
+          <div id="sumCompras" class="card-value">$ 0</div>
+        </div>
+        <div class="card">
+          <div class="card-title">💎 Ahorros</div>
+          <div id="sumAhorros" class="card-value">$ 0</div>
+        </div>
+        <div class="card wide">
+          <div class="card-title">📉 Total Gastos</div>
+          <div id="sumGastos" class="card-value">$ 0</div>
+        </div>
+        <div class="card wide accent">
+          <div class="card-title">💰 Disponible</div>
+          <div id="sumLibre" class="card-value">$ 0</div>
+        </div>
+      </div>
+
+      <nav class="tabs">
+        <button class="tab active" data-tab="dashboardPanel">📊 Dashboard</button>
+        <button class="tab" data-tab="ingresosPanel">💵 Ingresos</button>
+        <button class="tab" data-tab="fijosPanel">🏠 Fijos</button>
+        <button class="tab" data-tab="tarjetasPanel">💳 Tarjetas</button>
+        <button class="tab" data-tab="creditosPanel">🏦 Créditos</button>
+        <button class="tab" data-tab="comprasPanel">🛒 Compras</button>
+        <button class="tab" data-tab="ahorrosPanel">💎 Ahorros</button>
+      </nav>
+    </section>
+
+    <section id="dashboardPanel" class="panel">
+      <h2>📈 Análisis del Mes</h2>
+      <div id="analisisMensual" class="bigbox"></div>
+      <h2>📦 Resumen por categorías</h2>
+      <div id="resumenCategorias" class="bigbox"></div>
+      <h2>🎯 Metas de Ahorro</h2>
+      <div id="metasAhorro"></div>
+      <h2>📜 Historial</h2>
+      <div id="tablaHistorial"></div>
+      <h2>💡 Recomendaciones</h2>
+      <div id="recomendaciones"></div>
+    </section>
+
+    <section id="ingresosPanel" class="panel hidden">
+      <div class="panel-head">
+        <h2>💵 Ingresos</h2>
+        <button id="addIngreso" class="pill">+ Agregar</button>
+      </div>
+      <div id="listaIngresos"></div>
+    </section>
+
+    <section id="fijosPanel" class="panel hidden">
+      <div class="panel-head">
+        <h2>🏠 Gastos Fijos</h2>
+        <button id="addFijo" class="pill">+ Agregar</button>
+        <button id="markAllFijos" class="pill">✔️ Marcar todo pagado</button>
+      </div>
+      <div id="listaFijos"></div>
+    </section>
+
+    <section id="tarjetasPanel" class="panel hidden">
+      <div class="panel-head">
+        <h2>💳 Tarjetas de Crédito</h2>
+        <button id="addTarjeta" class="pill">+ Agregar</button>
+        <button id="markAllTarjetas" class="pill">✔️ Marcar todo pagado</button>
+      </div>
+      <div id="listaTarjetas"></div>
+    </section>
+
+    <section id="creditosPanel" class="panel hidden">
+      <div class="panel-head">
+        <h2>🏦 Créditos Bancarios</h2>
+        <button id="addCredito" class="pill">+ Agregar</button>
+        <button id="markAllCreditos" class="pill">✔️ Marcar todo pagado</button>
+      </div>
+      <div id="listaCreditos"></div>
+    </section>
+
+    <section id="comprasPanel" class="panel hidden">
+      <div class="panel-head">
+        <h2>🛒 Compras</h2>
+        <button id="addCompra" class="pill">+ Agregar</button>
+        <button id="markAllCompras" class="pill">✔️ Marcar todo pagado</button>
+      </div>
+      <div id="listaCompras"></div>
+    </section>
+
+    <section id="ahorrosPanel" class="panel hidden">
+      <div class="panel-head">
+        <h2>💎 Metas de Ahorro</h2>
+        <button id="addAhorro2" class="pill">+ Nueva Meta</button>
+      </div>
+      <div id="listaAhorros"></div>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-box">
+      <button id="closeModal" class="modal-close" aria-label="Cerrar">✖</button>
+      <h3 id="modalTitle">Formulario</h3>
+      <form id="modalForm"></form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" aria-hidden="true"></div>
+
+  <script src="./app.app.js" defer></script>
+</body>
+</html>
